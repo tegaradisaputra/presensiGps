@@ -13,7 +13,15 @@ class AuthController extends Controller
         if(Auth::guard('employee')->attempt(['nik' => $request->nik, 'password' => $request->password])){
             return redirect('/dashboard');
         }else{
-            echo 'error';
+            return redirect('/')->with(['warning' => 'Nik or Password is incorrect']);
+        }
+    }
+
+    public function proseslogout()
+    {
+        if(Auth::guard('employee')->check()){
+            Auth::guard('employee')->logout();
+            return redirect('/');
         }
     }
     /**
