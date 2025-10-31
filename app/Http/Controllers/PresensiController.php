@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Presensi;
+// use App\Models\Presensi;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PresensiController extends Controller
 {
@@ -21,6 +25,7 @@ class PresensiController extends Controller
     public function create()
     {
         //
+        $cek = DB::table('attendances');
         return view('presensi.create');
     }
 
@@ -30,6 +35,35 @@ class PresensiController extends Controller
     public function store(Request $request)
     {
         //
+        $nik = Auth::guard('employee')->user()->nik;
+        $tgl_presensi = date('Y-m-d');
+        $jam = date('H:i:s');
+        $lokasi = $request->lokasi;
+        $image = $request->image;
+
+        $folderPath = "uploads/absensi/";
+        $formatName = $nik . "-" . $tgl_presensi;
+
+        $image_parts = explode(";base64", $image);
+        $image_base64 = base64_decode($image_parts[1]);
+        $fileName = $formatName . ".png";
+        $file = $folderPath . $fileName;
+        $data = [
+            'nik' => $nik,
+            'attendance_date' => $tgl_presensi,
+            'time_in' => $jam,
+            'photo_in' => $fileName,
+            'location' => $lokasi
+        ];
+        $simpan = DB::table('attendances')->insert($data);
+
+        if($simpan){
+            echo '0';
+            Storage::disk('public')->put($file, $image_base64);
+        }else{
+            echo '1';
+        }
+
     }
 
     /**

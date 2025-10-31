@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nik');
             $table->date('attendance_date');
-            $table->time('time_in')->nullalbe();
-            $table->time('time_out')->nullalbe();
-            $table->string('photo_in')->nullalbe();
-            $table->string('photo_out')->nullalbe();
-            $table->string('location')->nullalbe();
+            $table->time('time_in')->nullable();
+            $table->time('time_out')->nullable();
+            $table->string('photo_in')->nullable();
+            $table->string('photo_out')->nullable();
+            $table->string('location')->nullable();
             $table->timestamps();
 
             $table->foreign('nik')

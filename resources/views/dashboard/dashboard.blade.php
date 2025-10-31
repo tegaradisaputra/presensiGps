@@ -1,4 +1,4 @@
-@extends('layouts.presensi')
+@extends('layouts.attendance')
 @section('content')
     <div class="section" id="user-section">
             <div id="user-detail">

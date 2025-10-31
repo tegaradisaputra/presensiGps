@@ -1,4 +1,4 @@
-@extends('layouts.presensi')
+@extends('layouts.attendance')
 @section('header')
 <!-- App Header -->
     <div class="appHeader bg-primary text-light">
@@ -43,9 +43,17 @@
 
 <div class="row">
     <div class="col">
+        @if ($cek > 0)
+            <button id="takeabsen" class="btn btn-danger btn-block">
+            <ion-icon name="camera-outline"></ion-icon>
+            Absen Pulang
+        </button>
+        @else
         <button id="takeabsen" class="btn btn-primary btn-block">
             <ion-icon name="camera-outline"></ion-icon>
-            Absen Masuk</button>
+            Absen Masuk
+        </button>
+        @endif
     </div>
 </div>
 
@@ -54,10 +62,19 @@
         <div id="map"></div>
     </div>
 </div>
+
+<audio id="notifikasi_in">
+    <source src="{{ asset('assets/sound/notifikasi_in.mp3') }}" type="audio/mpeg">
+</audio>
+<audio id="notifikasi_out">
+    <source src="{{ asset('assets/sound/notifikasi_out.mp3') }}" type="audio/mpeg">
+</audio>
 @endsection
 
 @push('myscript')
     <script>
+        let notifikasi_in = document.getElementById('notifikasi_in')
+        let notifikasi_out = document.getElementById('notifikasi_out')
         Webcam.set({
             height:480,
             width:640,
@@ -82,7 +99,7 @@
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
 
-            var circle = L.circle([position.coords.latitude, position.coords.longitude], {
+            var circle = L.circle([-7.923066167908787, 110.29657284232854], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
@@ -93,6 +110,48 @@
         function errorCallback(params) {
             
         }
+
+        $("#takeabsen").click(function (e) {
+        Webcam.snap(function (uri) {
+        var image = uri;
+        var lokasi = $("#lokasi").val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/attendance/store',
+            data: {
+                _token: '{{ csrf_token() }}',
+                image: image,
+                lokasi: lokasi
+            },
+            cache: false,
+            success: function (respond) {
+                let status = respond.split("|")
+                if (status[0] == "success") {
+                    if(status[2] == "in"){
+                        notifikasi_in.play();
+                    } else {
+                        notifikasi_out.play();
+                    }
+                    Swal.fire({
+                        title: 'Success!',
+                        text: status[1],
+                        icon: 'success'
+                    });setTimeout(() => {
+                        location.href = '/dashboard';
+                    }, 3000);
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: status[1],
+                        icon: 'error'
+                    });
+                }
+            }
+        });
+    });
+});
+
 
     </script>
 @endpush

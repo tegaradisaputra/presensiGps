@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\AttendanceController;
 
 
 Route::middleware(['guest:employee'])->group(function(){
@@ -18,5 +18,7 @@ Route::middleware(['guest:employee'])->group(function(){
 Route::middleware(['auth:employee'])->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/proseslogout', [AuthController::class, 'proseslogout']);
-    Route::get('/presensi/create', [PresensiController::class, 'create']);
+    
+    Route::get('/attendance/create', [AttendanceController::class, 'create']);
+    Route::post('/attendance/store', [AttendanceController::class, 'store']);
 });
