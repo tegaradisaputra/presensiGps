@@ -40,9 +40,9 @@ class AttendanceController extends Controller
         $nik = Auth::guard('employee')->user()->nik;
         $tgl_presensi = date('Y-m-d');
         $jam = date('H:i:s');
-        
-        $latitude_kantor = -7.923066167908787;
-        $longitude_kantor = 110.29657284232854;
+
+        $latitude_kantor = -7.923941033331527;
+        $longitude_kantor = 110.29634040794271;
         $lokasi = $request->lokasi;
         $lokasi_user = explode(",", $lokasi);
         $latitude_user = $lokasi_user[0];
@@ -62,8 +62,8 @@ class AttendanceController extends Controller
         $file = $folderPath . $fileName;
         
         $cek = DB::table('attendances')->where('attendance_date', $tgl_presensi)->where('nik', $nik)->count();
-        if($radius > 10){
-            echo "error|Maaf Anda Berada Di Luar Radius|";
+        if($radius > 5){
+            echo "error|Maaf Anda Berada Di Luar Radius, jarak anda " . $radius . " Meter Dari Kantor|radius";
         }else{
             if($cek > 0){
                 $data_pulang = [
@@ -95,20 +95,20 @@ class AttendanceController extends Controller
                 }
             }
         }
-        //Menghitung Jarak
-        function distance($lat1, $lon1, $lat2, $lon2)
-        {
-            $theta = $lon1 - $lon2;
-            $miles = (sin(deg2rad($lat1)) * sin(deg2rad($lat2))) + (cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta)));
-            $miles = acos($miles);
-            $miles = rad2deg($miles);
-            $miles = $miles * 60 * 1.1515;
-            $feet = $miles * 5280;
-            $yards = $feet / 3;
-            $kilometers = $miles * 1.609344;
-            $meters = $kilometers * 1000;
-            return compact('meters');
-        }
+    }
+    //Menghitung Jarak
+    private function distance($lat1, $lon1, $lat2, $lon2)
+    {
+        $theta = $lon1 - $lon2;
+        $miles = (sin(deg2rad($lat1)) * sin(deg2rad($lat2))) + (cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta)));
+        $miles = acos($miles);
+        $miles = rad2deg($miles);
+        $miles = $miles * 60 * 1.1515;
+        $feet = $miles * 5280;
+        $yards = $feet / 3;
+        $kilometers = $miles * 1.609344;
+        $meters = $kilometers * 1000;
+        return compact('meters');
     }
 
     /**
