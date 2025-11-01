@@ -41,8 +41,8 @@ class AttendanceController extends Controller
         $tgl_presensi = date('Y-m-d');
         $jam = date('H:i:s');
 
-        $latitude_kantor = -7.922992486361277;
-        $longitude_kantor = 110.29624399752076;
+        $latitude_kantor = -7.923125627065127;
+        $longitude_kantor = 110.2965900461825;
         $lokasi = $request->lokasi;
         $lokasi_user = explode(",", $lokasi);
         $latitude_user = $lokasi_user[0];

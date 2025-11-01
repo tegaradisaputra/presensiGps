@@ -103,7 +103,7 @@
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
 
-            var circle = L.circle([-7.922992486361277, 110.29624399752076], {
+            var circle = L.circle([-7.923125627065127, 110.2965900461825], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
