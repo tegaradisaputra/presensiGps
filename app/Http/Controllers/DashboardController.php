@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function index()
     {
         $hari_ini = date("Y-m-d");
-        $bulan_ini = date("m");
+        $bulan_ini = date("m") * 1;
         $tahun_ini = date("Y");
         $nik = Auth::guard('employee')->user()->nik;
         $presensi_hari_ini = DB::table("attendances")->where("nik", $nik)->where("attendance_date", $hari_ini)->first();
@@ -23,6 +23,22 @@ class DashboardController extends Controller
         ->whereRaw('YEAR(attendance_date)="' .  $tahun_ini . '"')
         ->orderBy('attendance_date')
         ->get();
-        return view('dashboard.dashboard', compact('presensi_hari_ini', 'histori_bulan_ini'));
+        $nama_bulan = [
+            "",
+            "Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember"
+        ];
+
+        return view('dashboard.dashboard', compact('presensi_hari_ini', 'histori_bulan_ini', 'nama_bulan', 'bulan_ini', 'tahun_ini'));
     }
 }
