@@ -169,6 +169,43 @@ class AttendanceController extends Controller
         }
     }
 
+    public function histori()
+    {
+        $nama_bulan = [
+            "",
+            "Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember"
+        ];
+
+        return view('attendance.histori', compact('nama_bulan'));
+    }
+
+    public function getHistori(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $nik = Auth::guard('employee')->user()->nik;
+
+        $histori = DB::table('attendances')
+        ->whereRaw('MONTH(attendance_date)="' . $bulan . '"')
+        ->whereRaw('YEAR(attendance_date)="' . $tahun . '"')
+        ->where('nik', $nik)
+        ->orderBy('attendance_date')
+        ->get();
+
+        return view('attendance.getHistori', compact('histori'));
+    }
+
     /**
      * Display the specified resource.
      */
