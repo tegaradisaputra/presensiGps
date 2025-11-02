@@ -8,9 +8,9 @@
         </a>
         <a href="#" class="item">
             <div class="col">
-                <ion-icon name="file-tray-full-outline" role="img" class="md hydrated"
-                    aria-label="file tray full outline"></ion-icon>
-                <strong>Today</strong>
+                <ion-icon name="document-text-outline" role="img" class="md hydrated"
+                    aria-label="document text outline"></ion-icon>
+                <strong>Histori</strong>
             </div>
         </a>
         <a href="/attendance/create" class="item">
@@ -24,10 +24,10 @@
             <div class="col">
                 <ion-icon name="document-text-outline" role="img" class="md hydrated"
                     aria-label="document text outline"></ion-icon>
-                <strong>Docs</strong>
+                <strong>Izin</strong>
             </div>
         </a>
-        <a href="javascript:;" class="item">
+        <a href="/editProfil" class="item">
             <div class="col">
                 <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon>
                 <strong>Profile</strong>

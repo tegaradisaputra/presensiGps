@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;;
 
 class AttendanceController extends Controller
 {
@@ -115,6 +117,56 @@ class AttendanceController extends Controller
         $kilometers = $miles * 1.609344;
         $meters = $kilometers * 1000;
         return compact('meters');
+    }
+
+    public function editProfil()
+    {
+        //
+        $nik = Auth::guard('employee')->user()->nik;
+        $employee = DB::table('employees')->where('nik', $nik)->first();
+
+        return view('attendance.edit', compact('employee'));
+    }
+
+    public function updateProfil(Request $request)
+    {
+        //
+        $nik = Auth::guard('employee')->user()->nik;
+        $full_name = $request->full_name;
+        $phone_number = $request->phone_number;
+        $password = Hash::make($request->password);
+        $employee = DB::table('employees')->where('nik', $nik)->first();
+        if($request->hasFile('picture')){
+            $picture = $nik . "." . $request->file('picture')->getClientOriginalextension();
+        }else{
+            $picture = $employee->picture;
+        }
+
+        if(empty($request->password)){
+            $data = [
+            'full_name' => $full_name,
+            'phone_number' => $phone_number,
+            'picture' => $picture
+        ];
+        }else{
+            $data = [
+                'full_name' => $full_name,
+                'phone_number' => $phone_number,
+                'password' => $password,
+                'picture' => $picture
+            ];
+        }
+
+        $update = DB::table('employees')->where('nik', $nik)->update($data);
+        if($update){
+            if($request->hasFile('picture')){
+                $folderPath = "public/uploads/employees/";
+                Storage::disk('public')->putFileAs('uploads/employees', $request->file('picture'), $picture);
+            }
+            return Redirect::back()->with(['success' => 'data Berhasil Di Update']);
+        } else {
+            return Redirect::back()->with(['error' => 'data gagal Di Update']);
+        }
     }
 
     /**

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('position');
             $table->string('phone_number');
+            $table->string('foto');
             $table->string('password');
             $table->rememberToken()->nullable();
             $table->timestamps();
