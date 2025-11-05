@@ -136,32 +136,32 @@ class AttendanceController extends Controller
         $phone_number = $request->phone_number;
         $password = Hash::make($request->password);
         $employee = DB::table('employees')->where('nik', $nik)->first();
-        if($request->hasFile('picture')){
-            $picture = $nik . "." . $request->file('picture')->getClientOriginalextension();
+        if($request->hasFile('pictures')){
+            $pictures = $nik . "." . $request->file('pictures')->getClientOriginalextension();
         }else{
-            $picture = $employee->picture;
+            $pictures = $employee->pictures;
         }
 
         if(empty($request->password)){
             $data = [
             'full_name' => $full_name,
             'phone_number' => $phone_number,
-            'picture' => $picture
+            'pictures' => $pictures
         ];
         }else{
             $data = [
                 'full_name' => $full_name,
                 'phone_number' => $phone_number,
                 'password' => $password,
-                'picture' => $picture
+                'pictures' => $pictures
             ];
         }
 
         $update = DB::table('employees')->where('nik', $nik)->update($data);
         if($update){
-            if($request->hasFile('picture')){
+            if($request->hasFile('pictures')){
                 $folderPath = "public/uploads/employees/";
-                Storage::disk('public')->putFileAs('uploads/employees', $request->file('picture'), $picture);
+                Storage::disk('public')->putFileAs('uploads/employees', $request->file('pictures'), $pictures);
             }
             return Redirect::back()->with(['success' => 'data Berhasil Di Update']);
         } else {
@@ -204,6 +204,43 @@ class AttendanceController extends Controller
         ->get();
 
         return view('attendance.getHistori', compact('histori'));
+    }
+
+    public function izin()
+    {
+        //
+        return view('attendance.izin');
+    }
+
+    public function createIzin()
+    {
+        //
+
+        return view('attendance.create_izin');
+    }
+
+    public function storeIzin(Request $request)
+    {
+        //
+        $nik = Auth::guard('employee')->user()->nik;
+        $leave_date = $request->leave_date;
+        $leave_type = $request->leave_type;
+        $description = $request->description;
+
+        $data = [
+            'nik' => $nik,
+            'leave_date' => $leave_date,
+            'leave_type' => $leave_type,
+            'description' => $description
+        ];
+
+        $simpan = DB::table('leave_requests')->insert($data);
+
+        if($simpan){
+            return redirect('attendance/izin')->with(['success' => 'Data Berhasil Disimpan']);
+        }else{
+            return redirect('attendance/izin')->with(['error' => 'Data Gagal Disimpan']);
+        }
     }
 
     /**

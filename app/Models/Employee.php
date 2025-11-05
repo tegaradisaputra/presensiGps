@@ -13,13 +13,14 @@ class Employee extends Authenticatable
     //
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'Employees';
+    protected $table = 'employees';
     protected $primaryKey = 'nik';
     protected $fillable = [
         'nik',
         'full_name',
         'position',
         'phone_number',
+        'pictures',
         'password',
     ];
 

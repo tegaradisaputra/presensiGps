@@ -27,4 +27,8 @@ Route::middleware(['auth:employee'])->group(function(){
 
     Route::get('/attendance/histori', [AttendanceController::class, 'histori']);
     Route::post('/getHistori', [AttendanceController::class, 'getHistori']);
+
+    Route::get('/attendance/izin', [AttendanceController::class, 'izin']);
+    Route::get('/attendance/create_izin', [AttendanceController::class, 'createIzin']);
+    Route::post('/attendance/storeIzin', [AttendanceController::class, 'storeIzin']);
 });
