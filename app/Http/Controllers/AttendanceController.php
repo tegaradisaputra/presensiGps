@@ -209,13 +209,15 @@ class AttendanceController extends Controller
     public function izin()
     {
         //
-        return view('attendance.izin');
+        $nik = Auth::guard('employee')->user()->nik;
+        $dataizin = DB::table('leave_requests')->where('nik',$nik)->get();
+        return view('attendance.izin', compact('dataizin'));
     }
 
     public function createIzin()
     {
         //
-
+        
         return view('attendance.create_izin');
     }
 

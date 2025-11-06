@@ -1,6 +1,14 @@
 @extends('layouts.attendance')
 @section('header')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"></link>
+<style>
+    .datepicker-model{
+        max-height: 430px !important;
+    }
+    .datepicker-date-display{
+        background-color:#0f3a7e !important;
+    }
+</style>
 <!-- App Header -->
     <div class="appHeader bg-primary text-light">
         <div class="left">

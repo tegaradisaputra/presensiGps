@@ -134,7 +134,7 @@
                     <div class="col-3">
                         <div class="card">
                             <div class="card-body text-center" style="padding: 12px 12px !important; line-height: 0.8rem">
-                                <span class="badge  bg-danger" style="position: absolute; top:3px; right:10px; font-size:0.5rem; z-index:999;">0</span>
+                                <span class="badge  bg-danger" style="position: absolute; top:3px; right:10px; font-size:0.5rem; z-index:999;">{{ $rekapIzin->jml_izin }}</span>
                                 <ion-icon name="newspaper-outline" style="font-size: 1.6rem;" class="text-success mb-1"></ion-icon>
                                 <br>
                                 <span style="font-size: 0.8rem;" >Izin</span>
@@ -144,7 +144,7 @@
                     <div class="col-3">
                         <div class="card">
                             <div class="card-body text-center" style="padding: 12px 12px !important; line-height: 0.8rem">
-                                <span class="badge  bg-danger" style="position: absolute; top:3px; right:10px; font-size:0.5rem; z-index:999;">0</span>
+                                <span class="badge  bg-danger" style="position: absolute; top:3px; right:10px; font-size:0.5rem; z-index:999;">{{ $rekapIzin->jml_sakit }}</span>
                                 <ion-icon name="medkit-outline" style="font-size: 1.6rem;" class="text-warning mb-1"></ion-icon>
                                 <br>
                                 <span style="font-size: 0.8rem;" >Sakit</span>

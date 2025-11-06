@@ -51,6 +51,13 @@ class DashboardController extends Controller
             "Desember"
         ];
 
-        return view('dashboard.dashboard', compact('presensi_hari_ini', 'histori_bulan_ini', 'nama_bulan', 'bulan_ini', 'tahun_ini', 'rekap_presensi', 'leaderboard'));
+        $rekapIzin = DB::table('leave_requests')
+        ->selectRaw('SUM(IF(leave_type = "i",1,0)) as jml_izin, SUM(IF(leave_type = "s",1,0)) as jml_sakit')
+        ->where('nik',$nik)
+        ->whereMonth('leave_date', $bulan_ini)
+        ->whereYear('leave_date', $tahun_ini)
+        ->where('approval_status', 1)
+        ->first();
+        return view('dashboard.dashboard', compact('presensi_hari_ini', 'histori_bulan_ini', 'nama_bulan', 'bulan_ini', 'tahun_ini', 'rekap_presensi', 'leaderboard', 'rekapIzin'));
     }
 }
